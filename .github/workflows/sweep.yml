@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt-get update && sudo apt-get install -y libsecp256k1-dev
-      - run: g++ -O3 -march=native -o engine2 engine2.cpp -lsecp256k1 -lpthread
+      - run: g++ -O3 -march=native -o engine2 .github/engine2.cpp -lsecp256k1 -lpthread
       - run: |
           LO=$(( shard * 1677722 ))
           HI=$(( LO + 1677722 ))
