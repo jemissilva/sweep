@@ -1,9 +1,6 @@
 name: sweep3
 on: workflow_dispatch
 jobs:
-  s:name: sweep3
-on: workflow_dispatch
-jobs:
   s:
     runs-on: ubuntu-latest
     timeout-minutes: 350
@@ -19,29 +16,6 @@ jobs:
       - run: |
           LO=$(( shard * 3355444 ))
           HI=$(( LO + 3355444 ))
-          ./engine2 --seedlo $LO --seedhi $HI --to 10000 | tail -5
-        env:
-          shard: ${{ matrix.shard }}
-      - if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: achou-${{ matrix.shard }}
-          path: ACHOU.txt
-          if-no-files-found: ignore
-    runs-on: ubuntu-latest
-    timeout-minutes: 350
-    strategy:
-      fail-fast: false
-      max-parallel: 20
-      matrix:
-        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
-    steps:
-      - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y libsecp256k1-dev
-      - run: g++ -O3 -march=native -o engine2 .github/engine2.cpp -lsecp256k1 -lpthread
-      - run: |
-          LO=$(( shard * 6710887 ))
-          HI=$(( LO + 6710887 ))
           ./engine2 --seedlo $LO --seedhi $HI --to 10000 | tail -5
         env:
           shard: ${{ matrix.shard }}
