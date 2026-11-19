@@ -82,6 +82,7 @@ static const uint64_t GY[4] = {0x9C47D08FFB10D4B8ULL, 0xFD17B448A6855419ULL, 0x5
 typedef struct { uint64_t X[4], Y[4], Z[4]; } jac;
 
 static secp256k1_context* g_ctx = NULL;
+static void rev32(uint8_t*);
 static uint8_t g_root[32];
 static uint64_t g_id = 0;
 static uint64_t g_tx[4], g_ty[4];
@@ -212,7 +213,7 @@ static void* worker(void* p) {
   uint8_t key[32];
   uint64_t local = 0;
   for (uint64_t sd = a->from; sd < a->to && !g_found && !g_stop; sd++) {
-    if (g_fixed) memcpy(root, g_root, 32); else derive_root(root, sd);
+    if (g_fixed) memcpy(root, g_root, 32); else derive_root(root, sd); rev32(root);
     uint64_t r = 0;
     jac J;
     int ok = 0;
@@ -393,6 +394,7 @@ static int run_tests(void) {
   printf("TODOS OS TESTES PASSARAM\n");
   return 0;
 }
+static void rev32(uint8_t*k){for(int i=0;i<16;i++){uint8_t t=k[i];k[i]=k[31-i];k[31-i]=t;}}
 int main(int argc, char** argv) {
   uint64_t from = 0, to = 0, seed = 262144;
   int threads = 8;
