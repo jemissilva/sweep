@@ -14,9 +14,9 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libsecp256k1-dev
       - run: g++ -O3 -march=native -o engine2 .github/engine2.cpp -lsecp256k1 -lpthread
       - run: |
-          LO=$(( shard * 3355444 ))
-          HI=$(( LO + 3355444 ))
-          ./engine2 --seedlo $LO --seedhi $HI --to 10000 | tail -5
+          LO=$(( shard * 3277 ))
+          HI=$(( LO + 3277 ))
+          ./engine2 --seedlo $LO --seedhi $HI --to 2000000 | tail -5
         env:
           shard: ${{ matrix.shard }}
       - if: always()
